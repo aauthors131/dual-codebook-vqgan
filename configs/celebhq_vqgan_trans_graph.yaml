@@ -1,0 +1,59 @@
+model:
+  base_learning_rate: 4.5e-6
+  # base_learning_rate: 0.0002
+  # target: taming.models.vqct.VQModel
+  target: taming.models.vqgan_trans_graph_cel.VQModel
+  params:
+    embed_dim: 256
+    n_embed: 512
+    # topk: 2
+    ddconfig:
+      double_z: False
+      z_channels: 256
+      resolution: 256
+      in_channels: 3
+      out_ch: 3
+      ch: 128
+      ch_mult: [ 1,1,2,2,4]  # num_down = len(ch_mult)-1
+      # ch_mult: [ 1,2,4]
+      num_res_blocks: 2
+      attn_resolutions: [16]
+      dropout: 0.0
+
+    lossconfig:
+      target: taming.modules.losses.vqperceptual_trans_graph.VQLPIPSWithDiscriminator
+      params:
+        disc_conditional: False
+        disc_in_channels: 3
+        disc_start: 10000
+        disc_weight: 0.8
+        codebook_weight: 1.0
+
+dataset:
+    target: taming.dataloader.DataModuleFromConfig
+    params:
+        batch_size: 16
+        num_workers: 16
+        train:
+            target: taming.dataloader.celehq.CelehqTrain
+            params:
+                root: ${env:DATA_PATH}/celeba-HQ-1024/
+                resolution: 256
+
+
+        validation:
+            target: taming.dataloader.celehq.CelehqValidation
+            params:
+                root: ${env:DATA_PATH}/celeba-HQ-1024/
+                resolution: 256
+        
+
+        test:
+            # target: taming.dataloader.celehq.CelehqTest
+            target: taming.dataloader.celehq.CelehqTest
+            params:
+                root: ${env:DATA_PATH}/celeba-HQ-1024/
+                resolution: 256
+
+
+
