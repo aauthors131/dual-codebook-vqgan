@@ -34,9 +34,9 @@ The dual codebook approach helps to avoid codebook collapse issues often seen in
 
 ## Model Performance
 
-Our model demonstrates strong reconstruction capabilities across different datasets:
+Our model demonstrates strong reconstruction capabilities across different datasets. An example has been added on CelebA-HQ:
 
-![Reconstruction Performance](./figures/reconstruction_performance.png)
+![Reconstruction Performance](./figures/celeba_recon.png)
 
 ## Installation
 
